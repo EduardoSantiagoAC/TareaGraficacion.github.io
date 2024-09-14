@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos con Canvas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid black;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proyectos con Canvas</h1>
+    <label for="projectSelector">Selecciona un proyecto:</label>
+    <select id="projectSelector">
+        <option value="snowman">Muñeco de nieve</option>
+        <option value="sunnyDay">Día soleado</option>
+        <option value="dinner">¿Qué hay para cenar?</option>
+        <option value="rabbitTeeth">Dientes de Conejo</option>
+        <option value="frog">Rana</option>
+    </select>
+    
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var images = {
+            snowman: new Image(),
+            sunnyDay: new Image(),
+            dinner: new Image(),
+            rabbitTeeth: new Image(),
+            frog: new Image()
+        };
+
+        // Ruta de las imágenes (ajusta las rutas según la ubicación de tus imágenes)
+        images.snowman.src = "Mono de nieve.png";
+        images.sunnyDay.src = "Dia Soleado.png";
+        images.dinner.src = "Cena.png";
+        images.rabbitTeeth.src = "Conejo.png";
+        images.frog.src = "Rana.png";
+
+        function drawImage(imageName) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var img = images[imageName];
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+
+        // Espera a que todas las imágenes se carguen antes de permitir la selección
+        var loadedImages = 0;
+        for (var key in images) {
+            images[key].onload = function() {
+                loadedImages++;
+                if (loadedImages === Object.keys(images).length) {
+                    // Dibuja el primer proyecto por defecto
+                    drawImage("snowman");
+                }
+            };
+        }
+
+        // Selector de proyectos
+        document.getElementById("projectSelector").addEventListener("change", function() {
+            var selectedProject = this.value;
+            drawImage(selectedProject);
+        });
+    </script>
+</body>
+</html>
+
+
